@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Linkedin, Facebook, Github, Mail, Gem } from "lucide-react";
 import { Contributor, contributorsData } from "@/data/contributors";
+import { useResolvedTheme } from "@/hooks/useResolvedTheme";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -45,23 +46,32 @@ const SocialIcon = ({
   href: string;
   icon: React.ElementType;
   label: string;
-}) => (
-  <motion.a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    whileHover={{ y: -3, scale: 1.15 }}
-    whileTap={{ scale: 0.9 }}
-    className="flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-black/35 text-emerald-300 shadow-[0_0_0_1px_rgba(16,185,129,0.08)] transition-all duration-300 hover:border-emerald-400 hover:bg-emerald-500/15 hover:text-white hover:shadow-[0_0_18px_rgba(52,211,153,0.35)]"
-    aria-label={label}
-  >
-    <Icon className="h-3.5 w-3.5" />
-  </motion.a>
-);
+}) => {
+  const { isDark } = useResolvedTheme();
+
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ y: -3, scale: 1.15 }}
+      whileTap={{ scale: 0.9 }}
+      className={
+        isDark
+          ? "flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/25 bg-black/35 text-emerald-300 shadow-[0_0_0_1px_rgba(16,185,129,0.08)] transition-all duration-300 hover:border-emerald-400 hover:bg-emerald-500/15 hover:text-white hover:shadow-[0_0_18px_rgba(52,211,153,0.35)]"
+          : "flex h-8 w-8 items-center justify-center rounded-full border border-emerald-600/30 bg-white/70 text-emerald-700 shadow-[0_0_0_1px_rgba(5,150,105,0.08)] transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-500/10 hover:text-emerald-900 hover:shadow-[0_0_18px_rgba(5,150,105,0.25)]"
+      }
+      aria-label={label}
+    >
+      <Icon className="h-3.5 w-3.5" />
+    </motion.a>
+  );
+};
 
 // ─── Contributor Card ─────────────────────────────────────────────────────────
 
 const ContributorCard = ({ person }: { person: Contributor }) => {
+  const { isDark } = useResolvedTheme();
   const displayImage = getImageUrl(person.profileImage);
 
   return (
@@ -71,13 +81,29 @@ const ContributorCard = ({ person }: { person: Contributor }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
-      className="group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(10,20,14,0.82)_0%,rgba(5,8,7,0.96)_100%)] shadow-[0_24px_80px_rgba(0,0,0,0.62)] ring-1 ring-inset ring-emerald-500/20"
+      className={
+        isDark
+          ? "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(10,20,14,0.82)_0%,rgba(5,8,7,0.96)_100%)] shadow-[0_24px_80px_rgba(0,0,0,0.62)] ring-1 ring-inset ring-emerald-500/20"
+          : "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-600/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(244,248,242,0.98)_100%)] shadow-[0_24px_80px_rgba(16,60,30,0.12)] ring-1 ring-inset ring-emerald-600/15"
+      }
     >
-      <div className="pointer-events-none absolute inset-0 rounded-2xl border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(34,197,94,0.08)]" />
+      <div
+        className={
+          isDark
+            ? "pointer-events-none absolute inset-0 rounded-2xl border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(34,197,94,0.08)]"
+            : "pointer-events-none absolute inset-0 rounded-2xl border border-black/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),inset_0_0_0_1px_rgba(16,120,60,0.06)]"
+        }
+      />
 
       {/* Top: circular glowing portrait */}
       <div className="relative flex justify-center px-5 pt-7">
-        <div className="relative aspect-square w-[80%] overflow-hidden rounded-full ring-4 ring-emerald-400 shadow-[0_0_24px_rgba(52,211,153,0.7),0_0_80px_rgba(16,185,129,0.25)]">
+        <div
+          className={
+            isDark
+              ? "relative aspect-square w-[80%] overflow-hidden rounded-full ring-4 ring-emerald-400 shadow-[0_0_24px_rgba(52,211,153,0.7),0_0_80px_rgba(16,185,129,0.25)]"
+              : "relative aspect-square w-[80%] overflow-hidden rounded-full ring-4 ring-emerald-500 shadow-[0_0_16px_rgba(16,185,129,0.35),0_0_50px_rgba(5,150,105,0.15)]"
+          }
+        >
           <img
             src={displayImage}
             alt={person.name}
@@ -92,21 +118,49 @@ const ContributorCard = ({ person }: { person: Contributor }) => {
       {/* Middle: text and actions */}
       <div className="flex flex-1 flex-col items-center px-5 pb-5 pt-4 text-center">
         <h3
-          className="text-xl font-bold leading-tight text-white"
+          className={
+            isDark
+              ? "text-xl font-bold leading-tight text-white"
+              : "text-xl font-bold leading-tight text-[#13241a]"
+          }
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
           {person.name}
         </h3>
 
-        <div className="mt-2 flex items-center gap-1.5 text-emerald-400">
-          <Gem className="h-3.5 w-3.5 fill-emerald-400/20" />
-          <span className="text-sm font-semibold text-emerald-400">
+        <div
+          className={
+            isDark
+              ? "mt-2 flex items-center gap-1.5 text-emerald-400"
+              : "mt-2 flex items-center gap-1.5 text-emerald-600"
+          }
+        >
+          <Gem
+            className={
+              isDark
+                ? "h-3.5 w-3.5 fill-emerald-400/20"
+                : "h-3.5 w-3.5 fill-emerald-600/20"
+            }
+          />
+          <span
+            className={
+              isDark
+                ? "text-sm font-semibold text-emerald-400"
+                : "text-sm font-semibold text-emerald-600"
+            }
+          >
             {person.role}
           </span>
         </div>
 
-        <p className="mt-1.5 text-[11px] leading-none text-[#8a938b]">
-          Web Development Team, Fall 2024
+        <p
+          className={
+            isDark
+              ? "mt-1.5 text-[11px] leading-none text-[#8a938b]"
+              : "mt-1.5 text-[11px] leading-none text-[#5b6b5d]"
+          }
+        >
+          Web & App Development Team, Fall 2025
         </p>
 
         <div className="mt-4 flex items-center justify-center gap-2">
@@ -146,15 +200,37 @@ const ContributorCard = ({ person }: { person: Contributor }) => {
 
 // ─── Tier Section Divider ─────────────────────────────────────────────────────
 
-const TierDivider = ({ label }: { label: string }) => (
-  <div className="flex items-center gap-4 mb-8">
-    <div className="flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/30 to-transparent" />
-    <span className="text-[#588157] text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-[#588157]/20 bg-[#588157]/5">
-      {label}
-    </span>
-    <div className="flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/30 to-transparent" />
-  </div>
-);
+const TierDivider = ({ label }: { label: string }) => {
+  const { isDark } = useResolvedTheme();
+
+  return (
+    <div className="flex items-center gap-4 mb-8">
+      <div
+        className={
+          isDark
+            ? "flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/30 to-transparent"
+            : "flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/40 to-transparent"
+        }
+      />
+      <span
+        className={
+          isDark
+            ? "text-[#588157] text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-[#588157]/20 bg-[#588157]/5"
+            : "text-[#3f6b41] text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-[#588157]/25 bg-[#588157]/8"
+        }
+      >
+        {label}
+      </span>
+      <div
+        className={
+          isDark
+            ? "flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/30 to-transparent"
+            : "flex-1 h-px bg-linear-to-r from-transparent via-[#588157]/40 to-transparent"
+        }
+      />
+    </div>
+  );
+};
 
 // ─── Group contributors by role in the defined order ─────────────────────────
 
@@ -169,6 +245,8 @@ const ROLE_ORDER: Contributor["role"][] = [
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function ContributorsPage() {
+  const { isDark } = useResolvedTheme();
+
   const grouped = ROLE_ORDER.reduce<Record<string, Contributor[]>>(
     (acc, role) => {
       acc[role] = contributorsData.filter((c) => c.role === role);
@@ -193,13 +271,23 @@ export default function ContributorsPage() {
   const director = grouped["Director"]?.[0];
 
   return (
-    <main className="min-h-screen pt-32 pb-28 relative overflow-hidden bg-[#060d0a]">
+    <main
+      className={
+        isDark
+          ? "min-h-screen pt-32 pb-28 relative overflow-hidden bg-[#060d0a]"
+          : "min-h-screen pt-32 pb-28 relative overflow-hidden bg-[#f6f9f4]"
+      }
+    >
       {/* Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-15%] left-[-8%] h-175 w-175 rounded-full bg-[#588157]/10 blur-[130px]"
+          className={
+            isDark
+              ? "absolute top-[-15%] left-[-8%] h-175 w-175 rounded-full bg-[#588157]/10 blur-[130px]"
+              : "absolute top-[-15%] left-[-8%] h-175 w-175 rounded-full bg-[#588157]/8 blur-[130px]"
+          }
         />
         <motion.div
           animate={{ x: [0, -40, 0], y: [0, -40, 0] }}
@@ -209,7 +297,11 @@ export default function ContributorsPage() {
             delay: 1.5,
             ease: "easeInOut",
           }}
-          className="absolute bottom-[-15%] right-[-8%] h-150 w-150 rounded-full bg-[#a3b18a]/8 blur-[130px]"
+          className={
+            isDark
+              ? "absolute bottom-[-15%] right-[-8%] h-150 w-150 rounded-full bg-[#a3b18a]/8 blur-[130px]"
+              : "absolute bottom-[-15%] right-[-8%] h-150 w-150 rounded-full bg-[#a3b18a]/10 blur-[130px]"
+          }
         />
       </div>
 
@@ -224,11 +316,21 @@ export default function ContributorsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-emerald-400 text-[10px] tracking-[0.3em] font-bold uppercase mb-4 block">
+            <span
+              className={
+                isDark
+                  ? "text-emerald-400 text-[10px] tracking-[0.3em] font-bold uppercase mb-4 block"
+                  : "text-emerald-600 text-[10px] tracking-[0.3em] font-bold uppercase mb-4 block"
+              }
+            >
               / The Development Team
             </span>
             <h1
-              className="text-4xl md:text-6xl font-bold text-[#d4e8c2] mb-5"
+              className={
+                isDark
+                  ? "text-4xl md:text-6xl font-bold text-[#d4e8c2] mb-5"
+                  : "text-4xl md:text-6xl font-bold text-[#1f3d24] mb-5"
+              }
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
                 letterSpacing: "-0.025em",
@@ -237,9 +339,15 @@ export default function ContributorsPage() {
               Meet the Contributors
             </h1>
             <div className="h-px w-16 bg-linear-to-r from-transparent via-emerald-500/60 to-transparent mx-auto mb-5" />
-            <p className="text-[#a3b18a]/75 text-base md:text-lg leading-relaxed">
-              The visionary minds and passionate developers shaping the ARC 3.0
-              platform.
+            <p
+              className={
+                isDark
+                  ? "text-[#a3b18a]/75 text-base md:text-lg leading-relaxed"
+                  : "text-[#3f5942]/85 text-base md:text-lg leading-relaxed"
+              }
+            >
+              The visionary minds and passionate developers shaping the ARC
+              Event Management platform.
             </p>
           </motion.div>
         </div>
@@ -339,17 +447,6 @@ export default function ContributorsPage() {
           </div>
         )}
       </div>
-
-      <footer className="relative z-10 pb-8 pt-2">
-        <div className="container mx-auto px-6 max-w-6xl flex justify-center">
-          <a
-            href="#meet-the-contributors"
-            className="inline-flex items-center rounded-full border border-emerald-500/20 bg-[#07110c]/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-emerald-300 transition-colors duration-300 hover:border-emerald-400/40 hover:bg-emerald-500/10 hover:text-emerald-200"
-          >
-            Meet the Contributors
-          </a>
-        </div>
-      </footer>
 
       {/* Glass noise overlay */}
       <div className="fixed inset-0 pointer-events-none z-1">
