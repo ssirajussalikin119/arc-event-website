@@ -83,15 +83,15 @@ const ContributorCard = ({ person }: { person: Contributor }) => {
       whileHover={{ y: -7, transition: { duration: 0.22, ease: "easeOut" } }}
       className={
         isDark
-          ? "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-[linear-gradient(180deg,rgba(10,20,14,0.82)_0%,rgba(5,8,7,0.96)_100%)] shadow-[0_24px_80px_rgba(0,0,0,0.62)] ring-1 ring-inset ring-emerald-500/20"
-          : "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-600/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(244,248,242,0.98)_100%)] shadow-[0_24px_80px_rgba(16,60,30,0.12)] ring-1 ring-inset ring-emerald-600/15"
+          ? "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-500/20 bg-[rgba(12,22,16,0.18)] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_24px_80px_rgba(0,0,0,0.62)] ring-1 ring-inset ring-emerald-500/20"
+          : "group relative flex w-full max-w-85 flex-col overflow-hidden rounded-2xl border border-emerald-600/25 bg-[rgba(255,255,255,0.28)] backdrop-blur-2xl backdrop-saturate-150 shadow-[0_24px_80px_rgba(16,60,30,0.12)] ring-1 ring-inset ring-emerald-600/15"
       }
     >
       <div
         className={
           isDark
-            ? "pointer-events-none absolute inset-0 rounded-2xl border border-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(34,197,94,0.08)]"
-            : "pointer-events-none absolute inset-0 rounded-2xl border border-black/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),inset_0_0_0_1px_rgba(16,120,60,0.06)]"
+            ? "pointer-events-none absolute inset-0 rounded-2xl border border-white/5 bg-[linear-gradient(135deg,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0)_45%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_0_0_1px_rgba(34,197,94,0.08)]"
+            : "pointer-events-none absolute inset-0 rounded-2xl border border-black/5 bg-[linear-gradient(135deg,rgba(255,255,255,0.5)_0%,rgba(255,255,255,0)_45%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.5),inset_0_0_0_1px_rgba(16,120,60,0.06)]"
         }
       />
 
@@ -160,7 +160,7 @@ const ContributorCard = ({ person }: { person: Contributor }) => {
               : "mt-1.5 text-[11px] leading-none text-[#5b6b5d]"
           }
         >
-          Web & App Development Team, Fall 2025
+          Web & App Development Team, Spring 2025
         </p>
 
         <div className="mt-4 flex items-center justify-center gap-2">
